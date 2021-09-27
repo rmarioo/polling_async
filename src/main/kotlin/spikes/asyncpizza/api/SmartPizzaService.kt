@@ -21,9 +21,10 @@ class SmartPizzaService(private val semanticSearchStorage: SemanticSearchStorage
         return if (searchResult != null)
             completed(searchResult)
         else {
-            if (semanticSearchStorage.checkOrCreateTaskInProgress(searchCriteria))
+            if (semanticSearchStorage.checkOrCreateTaskInProgress(searchCriteria)) {
+                log.warn("found a search already in progress for $searchCriteria i am going to avoid another remote call")
                 inProgress(timeToProcess(searchCriteria))
-            else {
+            } else {
                 asyncRemoteSearch(searchCriteria)
                     .thenAccept { response: String -> semanticSearchStorage.updateTaskWithResponse(searchCriteria, response) }
                 inProgress(timeToProcess(searchCriteria))

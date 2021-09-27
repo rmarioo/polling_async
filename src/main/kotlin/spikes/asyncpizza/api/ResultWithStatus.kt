@@ -1,6 +1,6 @@
 package spikes.asyncpizza.api
 
-data class ResultWithStatus(val pizza: String?, val responseStatus: ResponseStatus)
+data class ResultWithStatus(val result: String?, val responseStatus: ResponseStatus)
 
 data class ResponseStatus(val status: String,  val retryAfterSeconds: Int,  val progress: Int,  val error: String? = null) {
 
