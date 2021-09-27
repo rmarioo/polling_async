@@ -1,0 +1,9 @@
+POST  http://localhost:8080/api/bake/cookie?bakeTime=10
+Accept: application/json
+
+###
+
+POST  http://localhost:8080/api/bake/pizza?bakeTime=10
+Accept: application/json
+
+###

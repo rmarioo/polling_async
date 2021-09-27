@@ -1,0 +1,4 @@
+GET http://localhost:8080/slowapi/users/2
+Accept: application/json
+
+###
