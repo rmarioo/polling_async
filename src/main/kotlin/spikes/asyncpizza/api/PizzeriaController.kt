@@ -22,7 +22,7 @@ class PizzeriaController(val bakeryService: PizzaService) {
         log.info("called doOrder with bakedGood: $bakedGood")
         val ticket = bakeryService.orderPizza(bakedGood, bakeTime)
         log.info("got ticket  $ticket")
-        return ticket;
+        return ticket
     }
 
     @GetMapping("/bake/{jobId}")

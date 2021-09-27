@@ -1,4 +1,0 @@
-GET http://localhost:8080/slowsuspendapi/users/2
-Accept: application/json
-
-###

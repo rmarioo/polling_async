@@ -29,7 +29,7 @@ class SemanticSearchStorage {
 
     fun updateTaskWithResponse(criteria: String, response: String) {
 
-        resultsMap.put(criteria, ResponseAndTime(response, null))
+        resultsMap[criteria] = ResponseAndTime(response, null)
     }
 
 

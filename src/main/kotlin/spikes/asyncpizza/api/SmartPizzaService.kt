@@ -8,7 +8,6 @@ import spikes.asyncpizza.api.ResponseStatus.Companion.inProgress
 import java.time.LocalDateTime
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ExecutorService
-import kotlin.time.measureTimedValue
 
 class SmartPizzaService(private val semanticSearchStorage: SemanticSearchStorage,
                         private val bakers: ExecutorService) {
@@ -23,11 +22,11 @@ class SmartPizzaService(private val semanticSearchStorage: SemanticSearchStorage
             completed(searchResult)
         else {
             if (semanticSearchStorage.checkOrCreateTaskInProgress(searchCriteria))
-                inProgress(remainingSeconds(searchCriteria))
+                inProgress(timeToProcess(searchCriteria))
             else {
                 asyncRemoteSearch(searchCriteria)
                     .thenAccept { response: String -> semanticSearchStorage.updateTaskWithResponse(searchCriteria, response) }
-                inProgress(remainingSeconds(searchCriteria))
+                inProgress(timeToProcess(searchCriteria))
             }
         }
 
@@ -36,7 +35,7 @@ class SmartPizzaService(private val semanticSearchStorage: SemanticSearchStorage
     private fun asyncRemoteSearch(bakedGood: String): CompletableFuture<String> = CompletableFuture.supplyAsync(
         {
 
-            val requiredTime = remainingSeconds(bakedGood)
+            val requiredTime = timeToProcess(bakedGood)
             log.info("start to work on $bakedGood i will need $requiredTime seconds")
             doCall("https://reqres.in/api/users?delay=$requiredTime")
             log.info("completed  $bakedGood in $requiredTime seconds")
@@ -51,7 +50,7 @@ class SmartPizzaService(private val semanticSearchStorage: SemanticSearchStorage
     }
 
 
-    private fun remainingSeconds(bakedGood: String) = goodTimes.getOrDefault(bakedGood, 4)
+    private fun timeToProcess(bakedGood: String) = goodTimes.getOrDefault(bakedGood, 4)
 
 
     companion object {
